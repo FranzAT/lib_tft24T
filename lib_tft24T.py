@@ -244,7 +244,7 @@ class TFT24T():
         if image is None:
             image = image_buffer
         if image.size[0] == 320:
-            image = image.rotate(90)
+            image = image.transpose(Image.ROTATE_90)
 
         # Set address bounds to entire display.
         self.set_frame()
