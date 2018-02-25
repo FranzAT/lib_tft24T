@@ -1,7 +1,7 @@
 
-import Image
-import ImageDraw
-import ImageFont
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
 from lib_tft24T import TFT24T
 import RPi.GPIO as GPIO

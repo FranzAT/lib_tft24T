@@ -8,9 +8,9 @@ calib_offset240 = 29   # Likely about 28
 calib_offset320 = 27   # Likely about 25
 # You may amend these 4 values from the output of this procedure
 
-import Image
-import ImageDraw
-import ImageFont
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 
 from lib_tft24T import TFT24T
 import RPi.GPIO as GPIO

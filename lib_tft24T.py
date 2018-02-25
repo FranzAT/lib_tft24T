@@ -22,8 +22,8 @@ margin = 13
 import numbers
 import time
 
-import Image
-import ImageDraw
+from PIL import Image
+from PIL import ImageDraw
 import textwrap
 
 from types import MethodType
