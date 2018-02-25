@@ -55,7 +55,7 @@ ILI9341_GMCTRP1     = 0xE0
 ILI9341_GMCTRN1     = 0xE1
 
 
-Buffer = None
+image_buffer = None
 # textrotated custom method for our "draw" cannot find TFT's canvas buffer if it is not global.
 # This method obviously precludes multiple instances of TFT running independently,
 # but we use both CE0/CE1 of the Raspberry Pi anyway, so how could we have another display?
@@ -63,8 +63,6 @@ Buffer = None
 
 class TFT24T():
     def __init__(self, spi, gpio, landscape=False):
-
-
         self.is_landscape = landscape
         self._spi = spi
         self._gpio = gpio
@@ -199,7 +197,7 @@ class TFT24T():
         self.command(ILI9341_DISPON)
 
     def initLCD(self, dc=None, rst=None, led=None, ce=0, spi_speed=32000000):
-        global Buffer
+        global image_buffer
         self._dc = dc
         self._rst = rst
         self._led = led
@@ -216,11 +214,11 @@ class TFT24T():
 
         # Create an image buffer.
         if self.is_landscape:
-            Buffer = Image.new('RGB', (ILI9341_TFTHEIGHT, ILI9341_TFTWIDTH))
+            image_buffer = Image.new('RGB', (ILI9341_TFTHEIGHT, ILI9341_TFTWIDTH))
         else:
-            Buffer = Image.new('RGB', (ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT))
+            image_buffer = Image.new('RGB', (ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT))
         # and a backup buffer for backup/restore
-        self.buffer2 = Buffer.copy()
+        self.image_buffer2 = image_buffer.copy()
         self.resetlcd()
         self._init9341()
 
@@ -244,7 +242,7 @@ class TFT24T():
         """
         # By default write the internal buffer to the display.
         if image is None:
-            image = Buffer
+            image = image_buffer
         if image.size[0] == 320:
             image = image.rotate(90)
 
@@ -277,13 +275,13 @@ class TFT24T():
         if type(color) != type((0,0,0)):
             print("clear() function colours must be in (255,255,0) form")
             exit()
-        width, height = Buffer.size
-        Buffer.putdata([color]*(width*height))
+        width, height = image_buffer.size
+        image_buffer.putdata([color]*(width*height))
         self.display()
 
     def draw(self):
         """Return a PIL ImageDraw instance for drawing on the image buffer."""
-        d = ImageDraw.Draw(Buffer)
+        d = ImageDraw.Draw(image_buffer)
         # Add custom methods to the draw object:
         d.textrotated = MethodType(_textrotated, d)
         d.pasteimage = MethodType(_pasteimage, d)
@@ -294,18 +292,18 @@ class TFT24T():
         # The image should be 320x240 or 240x320 only (full wallpaper!). Errors otherwise.
         # We need to cope with whatever orientations file image and TFT canvas are.
         image = Image.open(filename)
-        if image.size[0] > Buffer.size[0]:
-            Buffer.paste(image.rotate(90))
-        elif image.size[0] < Buffer.size[0]:
-            Buffer.paste(image.rotate(-90))
+        if image.size[0] > image_buffer.size[0]:
+            image_buffer.paste(image.rotate(90))
+        elif image.size[0] < image_buffer.size[0]:
+            image_buffer.paste(image.rotate(-90))
         else:
-            Buffer.paste(image)
+            image_buffer.paste(image)
 
     def backup_buffer(self):
-        self.buffer2.paste(Buffer)
+        self.image_buffer2.paste(image_buffer)
 
     def restore_buffer(self):
-        Buffer.paste(self.buffer2)
+        image_buffer.paste(self.image_buffer2)
 
     def invert(self, onoff):
         if onoff:
@@ -375,11 +373,11 @@ def _textrotated(self, position, text, angle, font, fill="white"):
     # Rotate the text image.
     rotated = textimage.rotate(angle, expand=1)
     # Paste the text into the TFT canvas image, using text itself as a mask for transparency.
-    Buffer.paste(rotated, position, rotated)  # into the global Buffer
+    image_buffer.paste(rotated, position, rotated)  # into the global image_buffer
     #   example:  draw.textrotated(position, text, angle, font, fill)
 
 def _pasteimage(self, filename, position):
-    Buffer.paste(Image.open(filename), position)
+    image_buffer.paste(Image.open(filename), position)
     # example: draw.pasteimage('bl.jpg', (30,80))
 
 def _textwrapped(self, position, text1, length, height, font, fill="white"):
