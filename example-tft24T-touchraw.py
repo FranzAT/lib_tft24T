@@ -19,8 +19,8 @@ while 1:
     while not TFT.penDown():
         pass
 
-    print "%03X" % TFT.readValue(TFT.X)
-    print "%03X" % TFT.readValue(TFT.Y)
+    print("%03X" % TFT.readValue(TFT.X))
+    print("%03X" % TFT.readValue(TFT.Y))
 
-    print ""
+    print("")
     sleep(.5)

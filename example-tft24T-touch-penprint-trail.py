@@ -33,14 +33,14 @@ TFT.initTOUCH(PEN)
 draw = TFT.draw()
 
 TFT.clear((255, 255, 255))
-print "Draw on the screen with a pen/stylus"
+print("Draw on the screen with a pen/stylus")
 
 while 1:
     while not TFT.penDown():
         pass
 
     pos = TFT.penPosition()
-    print pos
+    print(pos)
     #print ""
     x2=pos[0]
     y2=pos[1]

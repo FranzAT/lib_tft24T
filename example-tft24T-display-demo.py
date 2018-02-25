@@ -52,21 +52,21 @@ while 1:
     TFT.clear()
 
 
-    print "Draw a blue ellipse"
+    print("Draw a blue ellipse")
     draw.ellipse((10, 10, 110, 80), outline="green", fill="blue")
 
-    print "Draw a purple rectangle"
+    print("Draw a purple rectangle")
     draw.rectangle((10, 90, 110, 160), outline="yellow", fill="purple")
 
 
-    print "Draw a white X"
+    print("Draw a white X")
     draw.line((10, 170, 110, 230), fill="white")
     draw.line((10, 230, 110, 170), fill="white")
 
-    print "Draw a cyan triangle.  (offscreen if landscape view)"
+    print("Draw a cyan triangle.  (offscreen if landscape view)")
     draw.polygon([(10, 275), (110, 240), (110, 310)], outline="black", fill="cyan")
 
-    print "Now display it all to screen"
+    print("Now display it all to screen")
     TFT.display()
 
     # Load default font.
@@ -76,36 +76,36 @@ while 1:
     # Some other nice fonts to try: http://www.dafont.com/bitmap.php
     font = ImageFont.truetype('Minecraftia.ttf', 24)
 
-    print "Write two lines of text on the buffer, one of then rotated."
+    print("Write two lines of text on the buffer, one of then rotated.")
     draw.text((15, 12), 'Hello World!', font=font, fill="White")
     draw.textrotated((30, 90), 'A line of text.', 30, font, fill="lightgreen")
     TFT.display()   # Let's take a look
 
-    print "Save a backup of the canvas"
+    print("Save a backup of the canvas")
     TFT.backup_buffer()   # take a snapshot of current display
 
     # wallpaper (320x240 or 240x320) are images that fill the total canvas
-    print "Load a full wallpaper image, a landscape one. It orients automatically."
-    print "Write on it, then display all"
+    print("Load a full wallpaper image, a landscape one. It orients automatically.")
+    print("Write on it, then display all")
     TFT.load_wallpaper("yoga.jpg")   # It's a landscape pic. It will align itself to landscape
     draw.text((100,100), "YES", font=font, fill=(255,255,0))
     TFT.display()     # A completely fresh display
     sleep(1)
-    print "Load another image. A portrait one. It automatically adjusts orientation"
+    print("Load another image. A portrait one. It automatically adjusts orientation")
     TFT.load_wallpaper("girl.jpg")    # It's a portrait pic. It will align itself to portrait
     TFT.display()
 
-    print "Now restore from that backup. Old display returns."
+    print("Now restore from that backup. Old display returns.")
     TFT.restore_buffer()     # restore that earlier snapshot view
     TFT.display()
     sleep(1)
 
-    print "Test colour-inversion"
+    print("Test colour-inversion")
     TFT.invert(1)    # test colour inversion mode
     sleep(0.5)
     TFT.invert(0)
     sleep(0.5)
-    print "Test the backlight can be turned off"
+    print("Test the backlight can be turned off")
     TFT.backlite(0)   # test that backlight LEDs can be controlled
     sleep(0.5)
     TFT.backlite(1)
@@ -113,7 +113,7 @@ while 1:
     TFT.clear()
 
     # Test two methods of adding small images to canvas:
-    print "Paste several images across the canvas, and display"
+    print("Paste several images across the canvas, and display")
     draw.bitmap((32, 0), Image.open('pi_logo.png'), fill="blue") # native 1-bit draw function
     draw.pasteimage("rpi3.jpg", (115,0))# custom method for coloured image
     draw.pasteimage('bl.jpg', (30,80))
@@ -121,7 +121,7 @@ while 1:
     TFT.display()
     sleep(1)
 
-    print "Test a long para of text, auto-wrapped into screen lines."
+    print("Test a long para of text, auto-wrapped into screen lines.")
     TFT.clear()
     font=ImageFont.truetype('FreeSans.ttf', 18)
     text1 = \
@@ -137,13 +137,13 @@ lived at home, and would be the same risk-averse mouse she'd always been."""
     sleep(4)
 
     TFT.clear((90,90,255))
-    print "show a font in giant letters"
+    print("show a font in giant letters")
     font = ImageFont.truetype('FreeSerifItalic.ttf', 75)
     draw.text((15, 35), 'tft24T', font=font, fill="YELLOW")   # signature !
 
     TFT.display()
     sleep(3)
-    print "That's all f...    But we will start over ..."
+    print("That's all f...    But we will start over ...")
     sleep(2)
 
 #        All colours may be any notation (exc for clear() function):

@@ -90,7 +90,7 @@ while 1:
     if spot == "=":
         # Time to evaluate the expression entered. Simply use python maths
         try:
-            formula = `eval(formula)`
+            formula = repr(eval(formula))
             formula = "%.15s" % formula    # 15 char limit
             TFT.textdirect((20, 36), "                    ", font, fill="black")
             TFT.textdirect((20, 36), formula+"      ", font, fill="green")
