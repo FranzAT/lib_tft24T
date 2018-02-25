@@ -44,7 +44,12 @@ Included are
 
 Note that a finger does work on the touch device, but a stylus/pen works heaps better.
 
-
+## Updates by Sakartu
+- Made it python3 compatible
+- Use Pillow instead of PIL
+- Fixed bug where Landscape mode didn't work correctly
 
 Brian
 April 2015
+
+
