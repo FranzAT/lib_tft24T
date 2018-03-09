@@ -7,18 +7,6 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so.
 
-# Calibration scaling values from the calibration utility:
-# Makes touchscreen coordinates agree with TFT coordinates (240x320) for YOUR device
-# You may need to adjust these values for YOUR device
-calib_scale240 = 285
-calib_scale320 = 384
-calib_offset240 = 28
-calib_offset320 = 25
-
-margin = 13
-# "margin" is a no-go perimeter (in pixels).  [Stylus at very edge of touchscreen is rather jitter-prone.]
-
-
 import numbers
 import time
 
@@ -62,10 +50,19 @@ image_buffer = None
 # (Want the second SPI of the RPI2? - Not considered in this library)
 
 class TFT24T():
-    def __init__(self, spi, gpio, landscape=False):
+    def __init__(self, spi, gpio, landscape=False, calib_scale240=285, calib_scale320=384, calib_offset240=28, calib_offset320=25, margin=13):
         self.is_landscape = landscape
         self._spi = spi
         self._gpio = gpio
+         # Calibration scaling values from the calibration utility:
+	 # Makes touchscreen coordinates agree with TFT coordinates (240x320) for YOUR device
+	 # You may need to adjust these values for YOUR device
+        self._calib_scale240 = calib_scale240
+        self._calib_scale320 = calib_scale320
+        self._calib_offset240 = calib_offset240
+        self._calib_offset320 = calib_offset320
+        # "margin" is a no-go perimeter (in pixels).  [Stylus at very edge of touchscreen is rather jitter-prone.]
+        self._margin = margin
 
 # TOUCHSCREEN HARDWARE PART
 
@@ -109,11 +106,11 @@ class TFT24T():
         x = x / 10
         y = y / 10
         # empirically set calibration factors:
-        x2 = (4096 -x) * calib_scale240 / 4096   -calib_offset240
-        y2 = y * calib_scale320 / 4096   - calib_offset320
+        x2 = (4096 -x) * self._calib_scale240 / 4096   -self._calib_offset240
+        y2 = y * self._calib_scale320 / 4096   - self._calib_offset320
         # So far, these co-ordinates are the native portrait mode
 
-        if y2<margin or y2>(319-margin) or x2<margin or x2 > (239-margin):
+        if y2<self._margin or y2>(319-self._margin) or x2<self._margin or x2 > (239-self._margin):
             x2=0
             y2=0
         # The fringes of touchscreen give a lot of erratic/spurious results
