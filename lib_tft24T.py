@@ -261,7 +261,7 @@ class TFT24T():
             x3 = x
             x = y
             y = 319-x3
-        self.set_frame(x, y-size, x+size, y+size)
+        self.set_frame(int(x), int(y-size), int(x+size), int(y+size))
         pixelbytes=[0]*(size*size*8)
         self.data(pixelbytes)
 
