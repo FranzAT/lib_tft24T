@@ -162,7 +162,7 @@ class TFT24T():
             time.sleep(0.150)
         else:
             self.command(ILI9341_SWRESET)
-            sleep(1)
+            time.sleep(1)
 
     def _init9341(self):
         self.command(ILI9341_PWCTR1)
